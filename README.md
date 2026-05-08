@@ -1,151 +1,238 @@
-# 🛒 Pasarela de Ventas
+# 🤖 DocAI Assistant — Asistente de Análisis de Documentos con IA
 
-Sistema completo de pasarela de ventas y pagos desarrollado en Java con Spring Boot.
+Sube un PDF o pega texto plano y hazle preguntas en lenguaje natural. La IA responde **exclusivamente** basándose en el contenido del documento.
 
-## 🚀 Características
+![Stack](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi)
+![Stack](https://img.shields.io/badge/IA-Google%20Gemini-4285F4?style=flat-square&logo=google)
+![Stack](https://img.shields.io/badge/Frontend-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript)
+![Deploy](https://img.shields.io/badge/Deploy-Render%20%2B%20Netlify-46E3B7?style=flat-square)
 
-- **Catálogo de Productos**: Visualización de productos con imágenes, precios y descripciones
-- **Carrito de Compras**: Agregar, actualizar y eliminar productos del carrito
-- **Checkout**: Proceso de compra con formulario de envío y pago
-- **Gestión de Pedidos**: Confirmación y seguimiento de pedidos
-- **Filtros por Categoría**: Navegación fácil por categorías de productos
-- **Interfaz Moderna**: Diseño responsive y atractivo
+---
 
-## 🛠️ Tecnologías
+## ✨ Funcionalidades
 
-- **Java 17**
-- **Spring Boot 3.2.0**
-- **Thymeleaf** (plantillas HTML)
-- **Maven** (gestión de dependencias)
+- 📄 Carga de archivos **PDF** o **TXT** (hasta 10 MB) con drag & drop
+- ✏️ Opción de **pegar texto** directamente
+- 💬 Chat con **historial de conversación** visible
+- 🧠 Respuestas de **Google Gemini** ancladas al documento
+- 🌙 Interfaz oscura, responsive y accesible
 
-## 📋 Requisitos
+---
 
-- Java 17 o superior
-- Maven 3.6 o superior (opcional si usas IDE)
+## 🗂️ Estructura del proyecto
 
-## 🏃 Cómo Ejecutar
+```
+/
+├── backend/
+│   ├── main.py            # FastAPI app (endpoints /upload y /ask)
+│   ├── requirements.txt   # Dependencias Python
+│   ├── .env.example       # Variables de entorno de ejemplo
+│   ├── render.yaml        # Configuración de deploy en Render
+│   └── README.md          # Instrucciones del backend
+│
+├── frontend/
+│   ├── index.html         # Estructura HTML
+│   ├── style.css          # Estilos (dark theme)
+│   ├── app.js             # Lógica JavaScript
+│   └── netlify.toml       # Configuración de deploy en Netlify
+│
+└── README.md              # Este archivo
+```
 
-### Opción 1: Visual Studio Code
+---
 
-1. Abre VS Code en la carpeta del proyecto
-2. Instala la extensión **Extension Pack for Java**
-3. Abre `PasarelaVentasApplication.java`
-4. Haz clic en el botón **▶ Run** sobre el método `main()`
-5. Abre tu navegador en: `http://localhost:8080`
+## 🚀 Inicio rápido (local)
 
-### Opción 2: Maven
+### Requisitos previos
 
+- Python 3.10 o superior
+- Una API key gratuita de Google Gemini
+
+### 1. Obtener la API key de Gemini
+
+1. Ve a [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+2. Inicia sesión con tu cuenta de Google
+3. Haz clic en **"Create API key"**
+4. Copia la clave generada
+
+> ✅ No requiere tarjeta de crédito. El tier gratuito incluye 15 RPM y 1 millón de tokens/día con `gemini-1.5-flash`.
+
+---
+
+### 2. Configurar el backend
+
+```powershell
+cd backend
+
+# Crear entorno virtual
+python -m venv venv
+
+# Activar (Windows PowerShell)
+venv\Scripts\activate
+# Activar (macOS / Linux)
+# source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Configurar variables de entorno (Windows PowerShell)
+Copy-Item .env.example .env
+# macOS / Linux: cp .env.example .env
+# Edita .env y pega tu API key en GEMINI_API_KEY
+```
+
+Contenido del archivo `.env`:
+```env
+GEMINI_API_KEY=tu_api_key_aqui
+```
+
+Iniciar el servidor:
 ```bash
-mvn spring-boot:run
+uvicorn main:app --reload
 ```
 
-### Opción 3: IDE (IntelliJ IDEA / Eclipse)
+El backend estará disponible en `http://localhost:8000`  
+Documentación interactiva (Swagger): `http://localhost:8000/docs`
 
-1. Importa el proyecto como proyecto Maven
-2. Ejecuta la clase `PasarelaVentasApplication`
-3. Abre `http://localhost:8080` en tu navegador
+---
 
-## 📱 Funcionalidades
+### 3. Abrir el frontend
 
-### Página Principal (`/`)
-- Catálogo completo de productos
-- Agregar productos al carrito
-- Ver detalles de productos
+El frontend es HTML/CSS/JS puro — no necesita servidor ni build step.
 
-### Productos (`/productos`)
-- Lista de todos los productos
-- Filtros por categoría (Electrónica, Accesorios, Audio)
-- Búsqueda y navegación
-
-### Detalle de Producto (`/producto/{id}`)
-- Información completa del producto
-- Selección de cantidad
-- Agregar al carrito
-
-### Carrito (`/carrito`)
-- Ver todos los productos agregados
-- Actualizar cantidades
-- Eliminar productos
-- Ver total
-- Proceder al checkout
-
-### Checkout (`/checkout`)
-- Formulario de información del cliente
-- Selección de método de pago
-- Resumen del pedido
-- Confirmación de compra
-
-### Confirmación (`/checkout/procesar`)
-- Detalles del pedido confirmado
-- Número de pedido
-- Información de envío y pago
-
-## 🗂️ Estructura del Proyecto
-
+**Opción A — Abrir directamente:**
 ```
-Apps-1/
-├── pom.xml
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/
-│       │       └── example/
-│       │           └── pasarelaventas/
-│       │               ├── PasarelaVentasApplication.java
-│       │               ├── controller/
-│       │               │   ├── ProductoController.java
-│       │               │   ├── CarritoController.java
-│       │               │   └── CheckoutController.java
-│       │               ├── model/
-│       │               │   ├── Producto.java
-│       │               │   ├── ItemCarrito.java
-│       │               │   └── Pedido.java
-│       │               └── service/
-│       │                   ├── ProductoService.java
-│       │                   ├── CarritoService.java
-│       │                   └── PedidoService.java
-│       └── resources/
-│           ├── application.properties
-│           └── templates/
-│               ├── index.html
-│               ├── productos.html
-│               ├── detalle-producto.html
-│               ├── carrito.html
-│               ├── checkout.html
-│               └── confirmacion.html
-└── README.md
+Abre frontend/index.html en tu navegador
 ```
 
-## 🎨 Características de la Interfaz
-
-- Diseño moderno y responsive
-- Gradientes y animaciones suaves
-- Navegación intuitiva
-- Indicador de cantidad en el carrito
-- Formularios validados
-- Confirmaciones visuales
-
-## 🔧 Configuración
-
-El puerto por defecto es **8080**. Puedes cambiarlo en `src/main/resources/application.properties`:
-
-```properties
-server.port=8080
+**Opción B — Servidor local (recomendado para evitar restricciones CORS en algunos navegadores):**
+```bash
+cd frontend
+python -m http.server 3000
+# Abre http://localhost:3000
 ```
 
-## 📝 Notas
+> El archivo `app.js` detecta automáticamente si estás en `localhost` y apunta al backend en `http://localhost:8000`.
 
-- Los productos se cargan automáticamente al iniciar la aplicación
-- El carrito se mantiene en memoria durante la sesión
-- Los pedidos se almacenan en memoria (se pierden al reiniciar)
-- Las imágenes usan un servicio de placeholder (puedes cambiarlas por imágenes locales)
+---
 
-## 🚀 Próximas Mejoras
+## ☁️ Deploy en producción
 
-- Base de datos para persistencia
-- Autenticación de usuarios
-- Integración con pasarelas de pago reales
-- Sistema de inventario
-- Historial de pedidos
-- Búsqueda de productos
-- Sistema de reseñas
+### Backend → Render (free tier)
+
+1. Sube la carpeta `backend/` a un repositorio de GitHub.
+2. Ve a [https://render.com](https://render.com) → **New** → **Web Service**.
+3. Conecta el repositorio.
+4. Render detecta `render.yaml` automáticamente. Confirma:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. En **Environment Variables**, agrega:
+   - `GEMINI_API_KEY` → tu API key
+6. Haz clic en **Deploy**.
+7. Copia la URL pública (ej. `https://doc-analysis-backend.onrender.com`).
+
+> ⚠️ Los servicios gratuitos de Render se duermen tras 15 min de inactividad. La primera petición puede tardar ~30 s.
+
+---
+
+### Frontend → Netlify
+
+1. Sube la carpeta `frontend/` a un repositorio de GitHub.
+2. **Antes de hacer push**, edita `app.js` y reemplaza la URL del backend:
+   ```js
+   : "https://TU_URL_REAL.onrender.com"  // ← reemplaza esto
+   ```
+3. Ve a [https://netlify.com](https://netlify.com) → **Add new site** → **Import from Git**.
+4. Selecciona el repositorio del frontend.
+5. Configuración de build:
+   - **Publish directory:** `.`
+   - (No hay build command)
+6. Haz clic en **Deploy site**.
+
+**Alternativa — GitHub Pages:**
+1. Ve a Settings → Pages en tu repositorio del frontend.
+2. Source: `main` branch, carpeta `/` (root).
+3. GitHub Pages publicará el sitio automáticamente.
+
+---
+
+## 🔌 API Reference
+
+### `POST /upload`
+
+Recibe un archivo PDF o TXT y devuelve el texto extraído.
+
+**Request:** `multipart/form-data`
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `file` | File | PDF o TXT (máx. 10 MB) |
+
+**Response:**
+```json
+{
+  "text": "Contenido extraído del documento...",
+  "char_count": 15420,
+  "message": "Document processed successfully."
+}
+```
+
+---
+
+### `POST /ask`
+
+Envía una pregunta con el contexto del documento y recibe la respuesta de Gemini.
+
+**Request:** `application/json`
+```json
+{
+  "question": "¿Cuáles son las conclusiones principales?",
+  "context": "Texto completo del documento...",
+  "history": [
+    { "role": "user", "content": "pregunta anterior" },
+    { "role": "assistant", "content": "respuesta anterior" }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "answer": "Las conclusiones principales son..."
+}
+```
+
+---
+
+## 🛠️ Variables de entorno
+
+| Variable | Requerida | Descripción |
+|----------|-----------|-------------|
+| `GEMINI_API_KEY` | ✅ Sí | API key de Google AI Studio |
+
+---
+
+## 📦 Dependencias principales
+
+| Librería | Versión | Uso |
+|----------|---------|-----|
+| `fastapi` | 0.111.0 | Framework web |
+| `uvicorn` | 0.29.0 | Servidor ASGI |
+| `pdfplumber` | 0.11.0 | Extracción de texto PDF |
+| `google-generativeai` | 0.7.2 | API de Gemini |
+| `python-multipart` | 0.0.9 | Recepción de archivos |
+| `python-dotenv` | 1.0.1 | Variables de entorno |
+
+---
+
+## 🔒 Seguridad
+
+- La API key **nunca** se expone en el frontend
+- El contexto del documento se almacena **en memoria del navegador** (no en base de datos)
+- Límite de 10 MB por archivo y 100 000 caracteres de contexto
+- CORS configurado (ajusta `allow_origins` en producción para mayor seguridad)
+
+---
+
+## 📄 Licencia
+
+MIT — libre para uso personal y comercial.
