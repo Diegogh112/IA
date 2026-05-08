@@ -2,6 +2,8 @@ import os
 import io
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import pdfplumber
@@ -98,6 +100,17 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+
+# ── Serve frontend static files ────────────────────────────────────────────────
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
+
+if os.path.isdir(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+    @app.get("/", response_class=FileResponse)
+    def serve_frontend():
+        return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 
 @app.post("/upload", response_model=UploadResponse)

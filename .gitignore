@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+backend/venv/
+*.env
+!*.env.example
+
+# Vercel
+.vercel/
+
+# VS Code
+.vscode/
